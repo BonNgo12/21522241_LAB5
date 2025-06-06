@@ -28,8 +28,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 class MainActivity : ComponentActivity() {
-    private lateinit var statusText: TextView
-    private lateinit var generateFakeDataButton: Button
+    private lateinit var startStopButton: Button
     private lateinit var stepsProgressBar: ProgressBar
     private lateinit var stepsText: TextView
     private lateinit var caloriesText: TextView
@@ -37,6 +36,7 @@ class MainActivity : ComponentActivity() {
     private var stepGeneratorService: StepGeneratorService? = null
     private val handler = Handler(Looper.getMainLooper())
     private var isServiceBound = false
+    private var isTracking = false
     private val dataClient by lazy { Wearable.getDataClient(this) }
     private val scope = CoroutineScope(Dispatchers.IO)
     private var lastAchievementSent = 0
@@ -61,7 +61,8 @@ class MainActivity : ComponentActivity() {
         if (permissions.all { it.value }) {
             startStepGeneratorService()
         } else {
-            statusText.text = "Permissions required to track steps"
+            // No statusText anymore — can show Toast or disable button if needed
+            Log.w(TAG, "Permissions required to track steps")
         }
     }
 
@@ -83,16 +84,20 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        statusText = findViewById(R.id.status_text)
-        generateFakeDataButton = findViewById(R.id.generate_fake_data_button)
+        // Initialize views with new IDs
+        startStopButton = findViewById(R.id.start_stop_button)
         stepsProgressBar = findViewById(R.id.steps_progress_bar)
         stepsText = findViewById(R.id.steps_text)
         caloriesText = findViewById(R.id.calories_text)
         achievementsText = findViewById(R.id.achievements_text)
 
-        generateFakeDataButton.setOnClickListener {
-            if (checkAndRequestPermissions()) {
-                startStepGeneratorService()
+        startStopButton.setOnClickListener {
+            if (!isTracking) {
+                if (checkAndRequestPermissions()) {
+                    startStepGeneratorService()
+                }
+            } else {
+                stopStepGeneratorService()
             }
         }
     }
@@ -118,6 +123,24 @@ class MainActivity : ComponentActivity() {
             startService(serviceIntent)
         }
         bindService(serviceIntent, serviceConnection, Context.BIND_AUTO_CREATE)
+
+        isTracking = true
+        startStopButton.text = "Stop Tracking"
+    }
+
+    private fun stopStepGeneratorService() {
+        if (isServiceBound) {
+            unbindService(serviceConnection)
+            isServiceBound = false
+        }
+
+        val serviceIntent = Intent(this, StepGeneratorService::class.java)
+        stopService(serviceIntent)
+
+        handler.removeCallbacksAndMessages(null)
+
+        isTracking = false
+        startStopButton.text = "Start Tracking"
     }
 
     private fun startStepUpdates() {
@@ -126,42 +149,38 @@ class MainActivity : ComponentActivity() {
                 stepGeneratorService?.let { service ->
                     val steps = service.getCurrentSteps()
                     val calories = service.getCaloriesBurned()
-                    
-                    stepsText.text = "Steps: $steps"
-                    caloriesText.text = "Calories: %.1f".format(calories)
-                    
-                    // Update achievements
+
+                    stepsText.text = "$steps Steps"
+                    caloriesText.text = "Calories Burned: %.1f kcal".format(calories)
+
                     val achievements = listOf(
                         Achievement("First Steps", 100, steps >= 100),
                         Achievement("Getting Started", 500, steps >= 500),
                         Achievement("Halfway There", 1000, steps >= 1000),
                         Achievement("Step Master", 2000, steps >= 2000)
                     )
-                    
+
                     val achievementsList = achievements
                         .filter { it.isCompleted }
                         .joinToString("\n") { "🏆 ${it.name}" }
-                    
+
                     achievementsText.text = if (achievementsList.isNotEmpty()) {
                         "Achievements:\n$achievementsList"
                     } else {
-                        "No achievements yet"
+                        "🏅 No Achievements yet"
                     }
-                    
-                    // Update progress bar (0-2000 steps)
-                    stepsProgressBar.progress = (steps * 100 / 2000).coerceAtMost(100)
 
-                    // Send data to watch
+                    stepsProgressBar.progress = (steps * 10000 / 2000).coerceAtMost(10000)
+
                     sendDataToWatch(steps, calories)
 
-                    // Check for new achievements
                     val newAchievements = achievements.filter { it.isCompleted && it.stepsRequired > lastAchievementSent }
                     if (newAchievements.isNotEmpty()) {
                         lastAchievementSent = newAchievements.maxOf { it.stepsRequired }
                         sendAchievementToWatch(newAchievements.last())
                     }
                 }
-                handler.postDelayed(this, 1000) // Update every second
+                handler.postDelayed(this, 1000)
             }
         })
     }
@@ -174,7 +193,7 @@ class MainActivity : ComponentActivity() {
                     dataMap.putDouble("calories", calories)
                     dataMap.putLong("timestamp", System.currentTimeMillis())
                 }.asPutDataRequest()
-                
+
                 dataClient.putDataItem(request).await()
                 Log.d(TAG, "Data sent to watch - steps: $steps, calories: $calories")
             } catch (e: Exception) {
@@ -190,7 +209,7 @@ class MainActivity : ComponentActivity() {
                     dataMap.putString("name", achievement.name)
                     dataMap.putInt("steps_required", achievement.stepsRequired)
                 }.asPutDataRequest()
-                
+
                 dataClient.putDataItem(request).await()
                 Log.d(TAG, "Achievement sent to watch: ${achievement.name}")
             } catch (e: Exception) {

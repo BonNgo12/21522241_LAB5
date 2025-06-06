@@ -1,317 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color">
 
+    <!-- App Header -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/headerLayout"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="24dp">
+        android:gravity="center"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- App Header -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_marginBottom="32dp">
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_settings_applications"
+            android:tint="@color/primary_color"
+            android:layout_marginBottom="8dp"/>
 
-            <ImageView
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:src="@drawable/ic_settings_applications"
-                android:tint="@color/primary_color"
-                android:layout_marginBottom="16dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Service Demo App"
-                android:textSize="28sp"
-                android:textColor="@color/text_primary"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Explore Android Services &amp; Background Tasks"
-                android:textSize="16sp"
-                android:textColor="@color/text_secondary"
-                android:gravity="center"
-                android:alpha="0.8"/>
-
-        </LinearLayout>
-
-        <!-- Status Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            android:backgroundTint="@color/card_background">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:textSize="18sp"
-                    android:textColor="@color/text_primary"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="8dp">
-
-                    <View
-                        android:id="@+id/statusIndicator"
-                        android:layout_width="12dp"
-                        android:layout_height="12dp"
-                        android:background="@drawable/circle_shape"
-                        android:backgroundTint="@color/status_idle"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:id="@+id/tvStatus"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Ready to start"
-                        android:textSize="16sp"
-                        android:textColor="@color/text_primary"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/tvBoundServiceCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Bound Service Count: --"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
-                    android:visibility="gone"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Background Task Section -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:backgroundTint="@color/card_background">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_schedule"
-                        android:tint="@color/background_task_color"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Background Task"
-                        android:textSize="18sp"
-                        android:textColor="@color/text_primary"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Execute AsyncTask in background thread"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="16dp"/>
-
-                <Button
-                    android:id="@+id/btnBackground"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="Start Background Task"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="@color/background_task_color"
-                    android:elevation="2dp"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Foreground Service Section -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:backgroundTint="@color/card_background">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_notifications"
-                        android:tint="@color/foreground_service_color"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Foreground Service"
-                        android:textSize="18sp"
-                        android:textColor="@color/text_primary"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Run service with persistent notification"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="16dp"/>
-
-                <Button
-                    android:id="@+id/btnForeground"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="Start Foreground Service"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="@color/foreground_service_color"
-                    android:elevation="2dp"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Bound Service Section -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="2dp"
-            android:backgroundTint="@color/card_background">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="12dp">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_link"
-                        android:tint="@color/bound_service_color"
-                        android:layout_marginEnd="12dp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Bound Service"
-                        android:textSize="18sp"
-                        android:textColor="@color/text_primary"
-                        android:textStyle="bold"/>
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Bind to service for real-time interaction"
-                    android:textSize="14sp"
-                    android:textColor="@color/text_secondary"
-                    android:layout_marginBottom="16dp"/>
-
-                <Button
-                    android:id="@+id/btnBound"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:text="Bind to Service"
-                    android:textColor="@android:color/white"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:background="@drawable/button_background"
-                    android:backgroundTint="@color/bound_service_color"
-                    android:elevation="2dp"/>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Footer -->
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Tap any button to explore Android Services"
+            android:text="Service Demo App"
+            android:textSize="22sp"
+            android:textColor="@color/text_primary"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Explore Android Services"
             android:textSize="14sp"
             android:textColor="@color/text_secondary"
-            android:gravity="center"
             android:alpha="0.7"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="4dp"/>
 
     </LinearLayout>
 
-</ScrollView>
+    <!-- Status Card -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/statusCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        android:backgroundTint="@color/card_background"
+        app:layout_constraintTop_toBottomOf="@id/headerLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="16dp">
+
+            <View
+                android:id="@+id/statusIndicator"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:background="@drawable/circle_shape"
+                android:backgroundTint="@color/status_idle"
+                android:layout_marginEnd="12dp"/>
+
+            <TextView
+                android:id="@+id/tvStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ready to start"
+                android:textSize="16sp"
+                android:textColor="@color/text_primary"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Buttons Section -->
+    <LinearLayout
+        android:id="@+id/buttonSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:gravity="center_horizontal"
+        app:layout_constraintTop_toBottomOf="@id/statusCard"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <Button
+            android:id="@+id/btnBackground"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="▶ Start Background Task"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:backgroundTint="@color/background_task_color"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnForeground"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="▶ Start Foreground Service"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:backgroundTint="@color/foreground_service_color"
+            android:layout_marginBottom="12dp"/>
+
+        <Button
+            android:id="@+id/btnBound"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="▶ Bind to Service"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:backgroundTint="@color/bound_service_color"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:id="@+id/tvBoundServiceCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Bound Service Count: --"
+            android:textSize="14sp"
+            android:textColor="@color/text_secondary"
+            android:visibility="gone"
+            android:layout_marginTop="8dp"/>
+
+    </LinearLayout>
+
+    <!-- Footer -->
+    <TextView
+        android:id="@+id/footerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tap any button to explore Services"
+        android:textSize="12sp"
+        android:textColor="@color/text_secondary"
+        android:alpha="0.6"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="12dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
