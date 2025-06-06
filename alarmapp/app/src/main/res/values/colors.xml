@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary Colors -->
+    <color name="primary">#FF6750A4</color>
+    <color name="primary_variant">#FF4F378B</color>
+    <color name="secondary">#FF625B71</color>
+    <color name="secondary_variant">#FF7D5260</color>
+
+    <!-- Surface Colors -->
+    <color name="background">#FFFFFBFE</color>
+    <color name="surface">#FFFFFBFE</color>
+    <color name="error">#FFB3261E</color>
+
+    <!-- Text Colors -->
+    <color name="on_primary">#FFFFFFFF</color>
+    <color name="on_secondary">#FFFFFFFF</color>
+    <color name="on_background">#FF1C1B1F</color>
+    <color name="on_surface">#FF1C1B1F</color>
+    <color name="on_error">#FFFFFFFF</color>
+
+    <!-- Custom Colors -->
+    <color name="switch_thumb_tint">#FF6750A4</color>
+    <color name="switch_track_tint">#FFE8DEF8</color>
+    <color name="card_background">#FFF7F2FA</color>
+    <color name="text_primary">#FF1C1B1F</color>
+    <color name="text_secondary">#FF49454F</color>
+    <color name="text_tertiary">#FF79747E</color>
+</resources>
